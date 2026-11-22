@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>مدينة التنمية — مراجعة مقرر التنمية والتخطيط الاقتصادي</title>
+<meta name="theme-color" content="#0d4d3a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{ "imports": { "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.187.0/three.module.min.js" } }
+</script>
+</head>
+<body>
+<div id="world" aria-hidden="true"></div>
+<div id="labels" aria-hidden="true"></div>
+
+<header id="hud">
+  <div class="brand">
+    <span class="logo" aria-hidden="true"></span>
+    <div>
+      <strong>مدينة التنمية</strong>
+      <small id="hud-rank">المجتمع التقليدي</small>
+    </div>
+  </div>
+  <div class="xp" title="الخبرة">
+    <div class="xp-bar"><i id="xp-fill"></i></div>
+    <span id="xp-text">0 خبرة</span>
+    <span id="streak" class="streak" hidden></span>
+  </div>
+  <nav class="hud-btns">
+    <button id="b-map" class="hbtn" title="خريطة المنهج (M)"><span>🗺️</span><em>الخريطة</em></button>
+    <button id="b-review" class="hbtn" title="مراجعة اليوم (R)"><span>🔁</span><em>مراجعة</em><b id="review-count" hidden>0</b></button>
+    <button id="b-report" class="hbtn" title="تقريري"><span>📊</span><em>تقريري</em></button>
+    <button id="b-fontup" class="hbtn sm" title="تكبير الخط" aria-label="تكبير الخط">A+</button>
+    <button id="b-fontdn" class="hbtn sm" title="تصغير الخط" aria-label="تصغير الخط">A−</button>
+    <button id="b-mute" class="hbtn sm" title="كتم الصوت" aria-label="كتم الصوت">🔊</button>
+    <button id="b-help" class="hbtn sm" title="مساعدة" aria-label="مساعدة">؟</button>
+  </nav>
+</header>
+
+<div id="near" class="near" hidden>
+  <span id="near-text"></span>
+  <button id="near-open">افتح <kbd>E</kbd></button>
+</div>
+
+<div id="joy" class="joy" aria-hidden="true"><i></i></div>
+<button id="act" class="act" aria-label="افتح">افتح</button>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<div id="modal" class="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="sheet-head">
+      <div>
+        <small id="sheet-kicker"></small>
+        <h2 id="sheet-title"></h2>
+      </div>
+      <button id="sheet-close" class="x" aria-label="إغلاق (Esc)">✕</button>
+    </div>
+    <div id="sheet-body" class="sheet-body" tabindex="-1"></div>
+  </div>
+</div>
+
+<div id="start" class="start">
+  <div class="start-card">
+    <div class="start-emblem" aria-hidden="true"></div>
+    <h1>مدينة التنمية</h1>
+    <p class="lead">مراجعة مقرر <b>التنمية والتخطيط الاقتصادي</b> في مدينة من خمسة أحياء، كل حيّ فصول من المذكرة.</p>
+    <p class="how">تجوّل بالأسهم أو <kbd>W A S D</kbd> (أو العصا على الجوال)، واقترب من أي قوس واضغط <kbd>E</kbd> لتفتح الدرس. ونجاحك بـ٨٠٪ في اختبار الحي يفتح الحي التالي.</p>
+    <label class="field">اسمك (يظهر في الشهادة والتقرير)
+      <input id="in-name" type="text" maxlength="40" autocomplete="name" placeholder="مثال: مصطفى">
+    </label>
+    <label class="check"><input id="in-free" type="checkbox"> مراجعة حرة: افتح كل الأحياء من الآن</label>
+    <div class="start-btns">
+      <button id="b-start" class="btn primary">ادخل المدينة</button>
+      <button id="b-start-map" class="btn">ابدأ من الخريطة</button>
+    </div>
+    <p class="src">المصدر: مذكرة التنمية والتخطيط الاقتصادي — الجامعة الإسلامية بالمدينة المنورة، كلية الأعمال، قسم الاقتصاد، إعداد طلاب الدفعة 1447هـ، إشراف د. أسامة الحجيلي.</p>
+  </div>
+</div>
+
+<div id="loading" class="loading" hidden>تُبنى المدينة…</div>
+
+<script src="js/content.js"></script>
+<script src="js/app.js"></script>
+<script type="module">
+  const fail = (e) => { console.warn('3D unavailable:', e && e.message); window.APP && window.APP.no3d(); };
+  try {
+    const c = document.createElement('canvas');
+    if (!(c.getContext('webgl2') || c.getContext('webgl'))) throw new Error('no webgl');
+    import('./js/world.js').then(m => m.init(document.getElementById('world'), window.APP)).catch(fail);
+  } catch (e) { fail(e); }
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>وزير التخطيط — لعبة مقرر التنمية والتخطيط الاقتصادي</title>
+<meta name="theme-color" content="#0d4d3a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header id="hud">
+  <div class="brand">
+    <span class="logo" aria-hidden="true"></span>
+    <div>
+      <strong>وزير التخطيط</strong>
+      <small id="hud-rank">المجتمع التقليدي</small>
+    </div>
+  </div>
+  <div class="xp" title="الخبرة">
+    <div class="xp-bar"><i id="xp-fill"></i></div>
+    <span id="xp-text">0 خبرة</span>
+    <span id="streak" class="streak" hidden></span>
+  </div>
+  <nav class="hud-btns">
+    <button id="b-map" class="hbtn" title="أرشيف الملفات (M)"><span>🗺️</span><em>الأرشيف</em></button>
+    <button id="b-review" class="hbtn" title="مراجعة اليوم (R)"><span>🔁</span><em>مراجعة</em><b id="review-count" hidden>0</b></button>
+    <button id="b-report" class="hbtn" title="تقريري"><span>📊</span><em>تقريري</em></button>
+    <button id="b-fontup" class="hbtn sm" title="تكبير الخط" aria-label="تكبير الخط">A+</button>
+    <button id="b-fontdn" class="hbtn sm" title="تصغير الخط" aria-label="تصغير الخط">A−</button>
+    <button id="b-mute" class="hbtn sm" title="كتم الصوت" aria-label="كتم الصوت">🔊</button>
+    <button id="b-help" class="hbtn sm" title="مساعدة" aria-label="مساعدة">؟</button>
+  </nav>
+</header>
+
+<main id="app">
+  <aside id="desk" aria-label="مكتب الوزير">
+    <section class="plan">
+      <small id="plan-k"></small>
+      <h2 id="plan-t"></h2>
+      <div class="plan-row"><span id="plan-stage" class="stage-chip"></span><span id="plan-dots" class="dots"></span></div>
+    </section>
+    <button id="cta" class="btn primary cta"></button>
+    <section>
+      <h3 class="sec">مؤشرات الدولة <span class="muted">(أسماؤها من ص9–10، وأرقامها للعب)</span></h3>
+      <div id="inds" class="inds"></div>
+    </section>
+    <section>
+      <h3 class="sec">جدول أعمال الخطة</h3>
+      <ol id="agenda" class="agenda"></ol>
+    </section>
+  </aside>
+  <section id="view" aria-label="الدولة">
+    <canvas id="iso" aria-label="خريطة الدولة تتطور مع قراراتك"></canvas>
+    <div id="pulse" class="pulse" aria-live="polite"></div>
+    <div id="news" class="news" aria-live="polite"></div>
+    <div id="confetti" class="confetti" aria-hidden="true"></div>
+  </section>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<div id="modal" class="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="sheet-head">
+      <div>
+        <small id="sheet-kicker"></small>
+        <h2 id="sheet-title"></h2>
+      </div>
+      <button id="sheet-close" class="x" aria-label="إغلاق (Esc)">✕</button>
+    </div>
+    <div id="sheet-body" class="sheet-body" tabindex="-1"></div>
+  </div>
+</div>
+
+<div id="start" class="start">
+  <div class="start-card">
+    <div class="start-emblem" aria-hidden="true"></div>
+    <h1>وزير التخطيط</h1>
+    <p class="lead">أنت وزير التخطيط في دولة ناشئة. انقلها عبر <b>مراحل النمو الخمس</b> بقرارات مبنية على مقرر <b>التنمية والتخطيط الاقتصادي</b>.</p>
+    <p class="how">كل خطة خمسية: ملفات قرار من دروس المذكرة، وقرار كبير، ثم جلسة المجلس. القرار الصحيح يبني دولتك أمامك، والمتعجل يكلّف الخزينة.</p>
+    <label class="field">اسمك (يظهر في الشهادة والتقرير)
+      <input id="in-name" type="text" maxlength="40" autocomplete="name" placeholder="مثال: مصطفى">
+    </label>
+    <label class="check"><input id="in-free" type="checkbox"> مراجعة حرة: افتح كل الخطط من الآن</label>
+    <div class="start-btns">
+      <button id="b-start" class="btn primary">استلم الوزارة</button>
+      <button id="b-start-map" class="btn">أرشيف الملفات</button>
+    </div>
+    <p class="src">المصدر: مذكرة التنمية والتخطيط الاقتصادي — الجامعة الإسلامية بالمدينة المنورة، كلية الأعمال، قسم الاقتصاد، إعداد طلاب الدفعة 1447هـ، إشراف د. أسامة الحجيلي.</p>
+  </div>
+</div>
+
+
+<script src="js/content.js"></script>
+<script src="js/app.js"></script>
+<script src="js/iso.js"></script>
+<script src="js/sim.js"></script>
+</body>
+</html>
