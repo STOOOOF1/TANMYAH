@@ -78,6 +78,7 @@ header h1 small{display:block;font-size:12.5px;font-weight:500;color:var(--muted
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
 .anim{animation:pop .28s ease}
+.proglink{display:flex;align-items:center;gap:10px;margin:-2px 0 12px;font-size:12px;color:#5d6b6a;line-height:1.5}.proglink button{flex:none;font:inherit;font-size:12.5px;font-weight:800;color:#0f5c5a;background:#e3f1ef;border:1px solid #cfe0dd;border-radius:99px;padding:6px 12px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -87,7 +88,7 @@ header h1 small{display:block;font-size:12.5px;font-weight:500;color:var(--muted
     <button class="icon-btn" id="listBtn">☰ القائمة</button>
   </header>
   <div class="overall"><div class="row"><span>تقدّمك الكلي</span><span id="ovTxt"></span></div><div class="bar"><i id="ovBar"></i></div></div>
-  <div class="levels" id="levels"></div>
+  <div class="levels" id="levels"></div><div class="proglink"><button id="progBtn" type="button">🔗 انسخ رابط تقدّمك</button><span>احفظه في المفضلة: يعيدك إلى موضعك وما أنجزته ولو مُسح حفظ المتصفح</span></div>
   <div id="stage"></div>
 </div>
 
@@ -221,7 +222,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 const byLv=n=>CARDS.filter(c=>c.lv===n);
 const doneCount=n=>byLv(n).filter(c=>S.done[c.id]).length;
 const lvComplete=n=>doneCount(n)===byLv(n).length;
-const unlocked=n=>n===1||lvComplete(n-1);
+const unlocked=n=>true; // كل المستويات مفتوحة
 function queue(n){ // order of pending cards (supports "later")
   const ids=byLv(n).map(c=>c.id);
   let o=(S.order[n]||[]).filter(id=>ids.includes(id));
@@ -240,7 +241,7 @@ function render(){
   const L=LEVELS[S.level-1];const q=queue(S.level);
   let card=viewId?CARDS.find(c=>c.id===viewId):null;
   if(!card&&q.length)card=CARDS.find(c=>c.id===q[0]);
-  if(!card){
+  if(!card){window.__cur=null;
     const next=LEVELS[S.level];
     stage.innerHTML=`<div class="finish anim"><div class="big">🎉</div><h2>أتممت المستوى ${S.level}: ${L.name}</h2>
       <p>${next?`فهمت جميع بطاقاته (${L.total}). المستوى التالي «${next.name}» فيه ${next.total} بطاقة ويأخذك أعمق في المنهج.`:'أنهيت البطاقات المئة كلها. أنت الآن ملمّ بالمقرر من الصورة الكبرى إلى أدق التفاصيل.'}</p>
@@ -250,7 +251,7 @@ function render(){
     document.getElementById('review').onclick=openList;
     save();return;
   }
-  const idx=byLv(S.level).indexOf(card)+1;const isDone=!!S.done[card.id];
+  window.__cur=card.id;const idx=byLv(S.level).indexOf(card)+1;const isDone=!!S.done[card.id];
   stage.innerHTML=`<div class="card anim">
     ${isDone?'<span class="done-tag">✓ تمت</span>':''}
     <div class="meta"><span class="chap">${card.ch}</span><span class="count">المستوى ${S.level} · بطاقة ${idx} من ${L.total}</span></div>
@@ -286,7 +287,27 @@ function closeList(){sheetBg.classList.remove('show');}
 listBtn.onclick=openList;sheetBg.onclick=e=>{if(e.target===sheetBg)closeList();};
 let tt;function toast(m){toastEl.textContent=m;toastEl.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toastEl.classList.remove('show'),1400);}
 const toastEl=document.getElementById('toast');
-if(!unlocked(S.level))S.level=1;
+
+/* ===== رابط التقدم: يُكتب التقدم والموضع في الرابط، فيعود الدارس إلى مكانه ولو مُسح حفظ المتصفح ===== */
+const PROG=(()=>{const A='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+ const lvOf=id=>+String(id).split('-')[0].slice(1);
+ function enc(){const ids=P.ids(),d=P.done();let s='';for(let i=0;i<ids.length;i+=6){let v=0;for(let j=0;j<6;j++)if(d[ids[i+j]])v|=1<<j;s+=A[v];}
+  const c=P.cur();return 'p='+s+'&l='+P.level()+(c?'&c='+c:'');}
+ function sync(){try{window.history.replaceState(null,'','#'+enc());}catch(e){}}
+ function load(){let start=null;try{const m={};(location.hash||'').replace(/^#/,'').split('&').forEach(kv=>{const i=kv.indexOf('=');if(i>0)m[kv.slice(0,i)]=kv.slice(i+1);});
+  if(!m.p)return null;const ids=P.ids(),d=P.done(),before=ids.filter(i=>d[i]).length;let fromLink=0;
+  for(let i=0;i<ids.length;i++){const v=A.indexOf(m.p[Math.floor(i/6)]||'A');if(v>=0&&(v>>(i%6))&1){fromLink++;d[ids[i]]=true;}}
+  if(fromLink>=before){if(m.c&&ids.includes(m.c)){P.go(lvOf(m.c),m.c);start=m.c;}else if(+m.l>=1&&+m.l<=4)P.go(+m.l,null);}
+  P.save();}catch(e){}return start;}
+ function copy(){const url=location.href.split('#')[0]+'#'+enc();const ok=()=>toast('نُسخ الرابط ✓ احفظه في المفضلة أو أرسله لنفسك');
+  const fb=()=>{const t=document.createElement('textarea');t.value=url;t.style.cssText='position:fixed;opacity:0';document.body.appendChild(t);t.select();
+   let done=false;try{done=document.execCommand('copy');}catch(e){}t.remove();if(done)ok();else window.prompt('انسخ هذا الرابط واحفظه:',url);};
+  try{navigator.clipboard.writeText(url).then(ok,fb);}catch(e){fb();}}
+ return {sync,load,copy};})();
+const P={ids:()=>CARDS.map(c=>c.id),done:()=>S.done,level:()=>S.level,cur:()=>window.__cur,go:(l,id)=>{S.level=l;viewId=id;},save};
+{const _f=render;render=function(...a){const r=_f.apply(this,a);PROG.sync();return r;};}
+document.getElementById('progBtn').onclick=()=>PROG.copy();
+PROG.load();
 render();
 </script>
 </body>
