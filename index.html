@@ -3,34 +3,72 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مقرر التنمية والتخطيط الاقتصادي: ألعاب وبطاقات وملخص</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+<title>التنمية والتخطيط الاقتصادي — حزمة المذاكرة</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-  body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:Tajawal,"Segoe UI",Tahoma,sans-serif;
-    background:radial-gradient(ellipse at 50% 0%,rgba(201,164,58,.35),transparent 60%),linear-gradient(160deg,#072e23,#145f48);color:#17251f;padding:16px;box-sizing:border-box}
-  main{width:min(760px,100%);text-align:center}
-  h1{color:#fff;font-size:2.1rem;margin:.2rem 0}
-  p.sub{color:#e7cf86;margin:0 0 1.4rem}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
-  a.card{display:block;text-decoration:none;color:inherit;background:#fbf7ec;border:2px solid #c9a43a;border-radius:20px;padding:1.3rem;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform .15s}
-  a.card:hover{transform:translateY(-3px)}
-  a.card b{display:block;font-size:1.4rem;color:#0d4d3a;margin-bottom:.4rem}
-  a.card span{font-size:.95rem;line-height:1.8;color:#44564e}
-  a.card em{display:inline-block;margin-top:.7rem;font-style:normal;background:#145f48;color:#fff;border-radius:99px;padding:.3rem 1rem;font-weight:700}
-  small{display:block;color:#cfe3dc;margin-top:1.4rem;line-height:1.8}
+:root{--bg:#f6f3ec;--card:#fff;--ink:#1f2a2e;--mute:#5d6b70;--line:#e4ddcf;--teal:#0f5c58;--teal2:#e3f0ee;--gold:#a8782a;--gold2:#f7eedb;--warn:#8a3b12;--warn2:#fff4e5}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Tajawal",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px}
+a{color:inherit}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px}
+.hero{background:var(--teal);color:#fff;padding:42px 0 30px}
+.hero .kicker{font-size:15px;opacity:.85;margin:0}
+.hero h1{font-size:clamp(26px,5vw,38px);font-weight:800;margin:6px 0 8px;line-height:1.35}
+.hero p{margin:0;opacity:.9}
+.notice{background:var(--warn2);border:2px solid #f0c48a;border-radius:14px;padding:16px 18px;margin:-18px 0 22px;position:relative;color:var(--warn)}
+.notice strong{display:block;font-size:18px;margin-bottom:4px}
+.notice p{margin:0}
+nav.toc .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+nav.toc a{text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px;font-weight:500;line-height:1.45}
+.top{position:fixed;bottom:16px;left:16px;background:var(--teal);color:#fff;text-decoration:none;border-radius:999px;padding:8px 14px;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+nav.toc a b{color:var(--teal);margin-left:6px}
+nav.toc a:hover{border-color:var(--teal)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;color:var(--mute);font-size:15px;margin:14px 0 4px}
+.course{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin:18px 0;scroll-margin-top:12px}
+.course header{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.num{flex:0 0 46px;height:46px;border-radius:12px;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:22px}
+.course h2{margin:0;font-size:22px;line-height:1.4}
+.course header p{margin:2px 0 0;color:var(--mute);font-size:15px}
+.links{display:grid;gap:10px}
+.lnk{display:flex;align-items:center;gap:12px;text-decoration:none;border:1px solid var(--line);border-radius:12px;padding:12px 14px;transition:.15s}
+.lnk:hover{transform:translateX(-3px);border-color:var(--teal)}
+.lnk.memo{background:var(--teal2);border-color:#bcd9d5}
+.lnk .n{flex:0 0 30px;height:30px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-weight:700;color:var(--teal)}
+.lnk .tx{flex:1;display:flex;flex-direction:column;min-width:0}
+.lnk strong{font-size:18px}
+.lnk small{color:var(--mute);font-size:14px}
+.tag{flex:0 0 auto;font-size:13px;font-weight:700;border-radius:999px;padding:2px 10px}
+.tag.memo{background:var(--teal);color:#fff}
+.tag.ai{background:var(--gold2);color:var(--gold);border:1px solid #ead7ae}
+.ar{color:var(--mute);font-size:20px}
+.repo{display:inline-block;margin-top:12px;font-size:14px;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:26px 0 40px}
+@media(max-width:620px){nav.toc .wrap{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.course{padding:16px}.lnk{padding:10px 12px;gap:10px}.lnk .tag{display:none}.lnk.ai small::before{content:"ذكاء اصطناعي · ";color:var(--gold);font-weight:700}}
 </style>
 </head>
 <body>
-<main>
-  <h1>التنمية والتخطيط الاقتصادي</h1>
-  <p class="sub">لعبتان وبطاقات مراجعة وملخص للمقرر — اختر ما يناسبك</p>
-  <div class="grid">
-    <a class="card" href="wazir-altakhtit/"><b>وزير التخطيط</b><span>أدِر دولة ناشئة عبر خمس خطط خمسية، واتخذ قرارات مبنية على المذكرة، وشاهد دولتك تنمو أمامك.</span><em>العب</em></a>
-    <a class="card" href="madinat-altanmiya/"><b>مدينة التنمية</b><span>تجوّل في مدينة ثلاثية الأبعاد من خمسة أحياء، وافتح الدروس من أقواسها.</span><em>العب</em></a>
-    <a class="card" href="bitaqat/"><b>بطاقات المراجعة</b><span>100 بطاقة على أربعة مستويات تتعمق تدريجيًا، تضغط «تم» على ما فهمته فتأتيك التالية، ويُحفظ تقدمك.</span><em>ابدأ</em></a>
-    <a class="card" href="mulakhas/tanmiya-summary.pdf"><b>ملخص المقرر</b><span>المقرر كله في 10 صفحات PDF بجداول وخرائط ذهنية، جاهز للقراءة والطباعة.</span><em>افتح الملخص</em></a>
-  </div>
-  <small>المصدر: مذكرة التنمية والتخطيط الاقتصادي — الجامعة الإسلامية بالمدينة المنورة، كلية الأعمال، قسم الاقتصاد، إعداد طلاب الدفعة 1447هـ، إشراف د. أسامة الحجيلي.</small>
+<div class="hero"><div class="wrap">
+<p class="kicker">ماجستير الاقتصاد الإسلامي · المستوى الثالث · المقرر ٤</p>
+<h1>التنمية والتخطيط الاقتصادي</h1>
+<p>المذكرة: إعداد طلاب الدفعة 1447هـ، إشراف د. أسامة الحجيلي</p>
+</div></div>
+<div class="wrap">
+<div class="notice" role="note"><strong>⚠️ تنبيه مهم قبل الاستخدام</strong>
+<p>كل ما هنا من ملخصات وبطاقات وألعاب وغيرها أُعدّ عبر نماذج الذكاء الاصطناعي، ولم تتقدّم مراجعته ولا تدقيقه. والتحقق منه مطلوب من الطالب، مع مطابقة النتائج بالمذكرة المعتمدة، والمرجع عند أي اختلاف هو المذكرة المعتمدة.</p></div>
+</div>
+<main class="wrap">
+<section class="course"><header><span class="num">📚</span><div><h2>حزمة المذاكرة</h2><p>المذكرة والملخص في مجلد files/، والبطاقات في مجلد sites/</p></div></header>
+<div class="links">
+<a class="lnk memo" href="files/%D9%85%D8%B0%D9%83%D8%B1%D8%A9-%D8%A7%D9%84%D8%AA%D9%86%D9%85%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%AE%D8%B7%D9%8A%D8%B7-%D8%A7%D9%84%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF%D9%8A.pdf"><span class="n">١</span><span class="tx"><strong>المذكرة المعتمدة</strong><small>PDF · 26 صفحة</small></span><span class="tag memo">المرجع</span><span class="ar">←</span></a>
+<a class="lnk ai" href="files/tanmiya-summary.pdf"><span class="n">٢</span><span class="tx"><strong>الملخص</strong><small>PDF · 10 صفحات · الفصول الخمسة عشر</small></span><span class="tag ai">ذكاء اصطناعي</span><span class="ar">←</span></a>
+<a class="lnk ai" href="sites/cards/"><span class="n">٣</span><span class="tx"><strong>البطاقات</strong><small>100 بطاقة · 4 مستويات</small></span><span class="tag ai">ذكاء اصطناعي</span><span class="ar">←</span></a>
+</div></section>
+<section class="course"><header><span class="num">🎮</span><div><h2>الألعاب</h2><p>مجلد games/</p></div></header><div class="links"><a class="lnk ai" href="games/wazir-altakhtit/"><span class="n">🎮</span><span class="tx"><strong>وزير التخطيط</strong><small>لعبة تعليمية في المتصفح</small></span><span class="tag ai">ذكاء اصطناعي</span><span class="ar">←</span></a>
+<a class="lnk ai" href="games/madinat-altanmiya/"><span class="n">🎮</span><span class="tx"><strong>مدينة التنمية</strong><small>لعبة تعليمية في المتصفح</small></span><span class="tag ai">ذكاء اصطناعي</span><span class="ar">←</span></a>
+</div></section>
+<p style="text-align:center"><a class="repo" href="https://stoooof1.github.io/MNAHJ-BAHTH/sites/level3/">← كل مقررات المستوى الثالث</a> · <a class="repo" href="https://github.com/STOOOOF1/TANMYAH">المستودع على GitHub</a></p>
 </main>
 </body>
 </html>
